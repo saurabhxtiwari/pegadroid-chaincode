@@ -19,6 +19,8 @@ import (
 	peer "github.com/hyperledger/fabric/protos/peer"
 )
 
+var logger = shim.NewLogger("CHATTER-CHAINCODE-LOGGER")
+
 // Chatter struct is our chaincode interface implementation
 type Chatter struct {
 }
@@ -34,6 +36,16 @@ func (chatter *Chatter) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	var args []string
 	var funcName string
 	funcName, args = stub.GetFunctionAndParameters()
+
+	argsBytesMatrix := stub.GetArgs()
+	for i := range argsBytesMatrix {
+		logger.Info(argsBytesMatrix[i])
+		//fmt.Println(argsBytesMatrix[i])
+	}
+
+	argsSlice, _ := stub.GetArgsSlice()
+	logger.Info(argsSlice)
+	//fmt.Println(argsSlice)
 
 	if len(args) != 1 {
 		sysError = pgError.TransactionError{ErrorCode: pgError.InvalidArguments, ErrorMessage: "Invalid argument"}
@@ -84,6 +96,8 @@ func createPerson(stub shim.ChaincodeStubInterface, person *assets.Person) (stri
 
 // Start function to start the chaincode container
 func (chatter *Chatter) Start() {
+	logger.SetLevel(shim.LogInfo)
+	shim.SetLoggingLevel(shim.LogInfo)
 	if error := shim.Start(chatter); error != nil {
 		e := pgError.TransactionError{ErrorCode: 1, ErrorMessage: "Unprecedented error."}
 		fmt.Printf("Error starting chaincode container %s", e.Error())
