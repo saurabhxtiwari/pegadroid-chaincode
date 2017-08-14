@@ -5,33 +5,33 @@ All rights reserved
 *********************************************************
 */
 
-package chatter
+package slabber
 
 import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	assets "pegadroid-chaincode/com/pegadroid/chaincode/chatter/assets"
 	pgError "pegadroid-chaincode/com/pegadroid/chaincode/error"
+	assets "pegadroid-chaincode/com/pegadroid/chaincode/slabber/assets"
 	"time"
 
 	shim "github.com/hyperledger/fabric/core/chaincode/shim"
 	peer "github.com/hyperledger/fabric/protos/peer"
 )
 
-var logger = shim.NewLogger("CHATTER-CHAINCODE-LOGGER")
+var logger = shim.NewLogger("SLABBER-CHAINCODE-LOGGER")
 
-// Chatter struct is our chaincode interface implementation
-type Chatter struct {
+// Slabber struct is our chaincode interface implementation
+type Slabber struct {
 }
 
 // Init chaincode interface method
-func (chatter *Chatter) Init(stub shim.ChaincodeStubInterface) peer.Response {
+func (slabber *Slabber) Init(stub shim.ChaincodeStubInterface) peer.Response {
 	return shim.Success([]byte("Init Success"))
 }
 
 //Invoke chaincode interface method
-func (chatter *Chatter) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
+func (slabber *Slabber) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	sysError := pgError.TransactionError{ErrorCode: -1, ErrorMessage: ""}
 	var args []string
 	var funcName string
@@ -95,10 +95,10 @@ func createPerson(stub shim.ChaincodeStubInterface, person *assets.Person) (stri
 }
 
 // Start function to start the chaincode container
-func (chatter *Chatter) Start() {
+func (slabber *Slabber) Start() {
 	logger.SetLevel(shim.LogInfo)
 	shim.SetLoggingLevel(shim.LogInfo)
-	if error := shim.Start(chatter); error != nil {
+	if error := shim.Start(slabber); error != nil {
 		e := pgError.TransactionError{ErrorCode: 1, ErrorMessage: "Unprecedented error."}
 		fmt.Printf("Error starting chaincode container %s", e.Error())
 	}

@@ -9,11 +9,11 @@ package main
 
 import (
 	"fmt"
-	"pegadroid-chaincode/com/pegadroid/chaincode/chatter"
+	"pegadroid-chaincode/com/pegadroid/chaincode/slabber"
 )
 
 func main() {
 	fmt.Println("Starting Chaincode")
-	ch := chatter.Chatter{}
+	ch := slabber.Slabber{}
 	ch.Start()
 }
