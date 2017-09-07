@@ -11,8 +11,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	pgError "pegadroid-chaincode/com/pegadroid/chaincode/error"
-	assets "pegadroid-chaincode/com/pegadroid/chaincode/slabber/assets"
+	pgError "pegadroid-sample-chaincode/com/pegadroid/chaincode/error"
+	assets "pegadroid-sample-chaincode/com/pegadroid/chaincode/slabber/assets"
 	"time"
 
 	shim "github.com/hyperledger/fabric/core/chaincode/shim"
@@ -47,13 +47,18 @@ func (slabber *Slabber) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	logger.Info(argsSlice)
 	//fmt.Println(argsSlice)
 
-	if len(args) != 1 {
+	/*if len(args) != 1 {
 		sysError = pgError.TransactionError{ErrorCode: pgError.InvalidArguments, ErrorMessage: "Invalid argument"}
 		return shim.Error(sysError.Error())
+	}*/
+
+	for _, value := range args {
+		logger.Info(value)
 	}
 
 	switch funcName {
 	case "createPerson":
+		logger.Info("Inside create person")
 		person := assets.Person{}
 		if unmarshalError := json.Unmarshal([]byte(args[0]), &person); unmarshalError != nil {
 			sysError = pgError.TransactionError{ErrorCode: pgError.UnmarshalError, ErrorMessage: "Invalid argument " + unmarshalError.Error()}
@@ -65,6 +70,7 @@ func (slabber *Slabber) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 			return shim.Error(createPersonError.Error())
 		}
 
+		logger.Info("Invoke Success : " + createPersonResponse)
 		return shim.Success([]byte("Invoke Success : " + createPersonResponse))
 	case "queryPerson":
 		return shim.Success([]byte("Invoke Success"))

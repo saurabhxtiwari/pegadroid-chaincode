@@ -9,7 +9,7 @@ package main
 
 import (
 	"fmt"
-	"pegadroid-chaincode/com/pegadroid/chaincode/slabber"
+	"pegadroid-sample-chaincode/com/pegadroid/chaincode/slabber"
 )
 
 func main() {
